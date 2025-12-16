@@ -84,9 +84,9 @@ function FormSignUp() {
       {/* link to sign in */}
       <div className="flex justify-center text-sm text-gray-03">
         Already have an account?{" "}
-        <a href="/signin" className="text-primary font-bold ml-1 hover:underline">
-          Sign in here
-        </a>
+        <Link to="/login" className="text-primary text-sm font-bold">
+          Sign In Here
+        </Link>
       </div>
     </>
   );

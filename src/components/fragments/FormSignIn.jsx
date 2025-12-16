@@ -86,7 +86,7 @@ function FormSignIn() {
 
         {/* link start */}
         <div className="flex justify-center">
-          <Link to="/signup" className="text-primary text-sm font-bold">
+          <Link to="/register" className="text-primary text-sm font-bold">
     Create an account
   </Link>
         </div>
