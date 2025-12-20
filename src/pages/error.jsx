@@ -2,7 +2,7 @@ import React from "react";
 import { useRouteError } from "react-router-dom";
 import Logo from "../components/elements/Logo";
 
-function error() {
+function Error() {
   const error = useRouteError();
 
   return (
@@ -16,4 +16,4 @@ function error() {
   );
 }
 
-export default error;
+export default Error;

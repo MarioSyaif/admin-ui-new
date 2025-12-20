@@ -4,7 +4,7 @@ import Card from '../components/elements/Card';
 
 
 
-function dashboard() {
+function Dashboard() {
   return (
     <>
     	<MainLayout>
@@ -53,4 +53,4 @@ function dashboard() {
   );
 }
 
-export default dashboard;
+export default Dashboard;
