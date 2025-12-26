@@ -2,7 +2,7 @@ import React from "react";
 import Logo from "../elements/Logo";
 import Input from "../elements/Input";
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import Icon from "../elements/Icon";
+import Icon from "../elements/icon";
 import { NavLink } from "react-router-dom";
 
 function MainLayout(props) {

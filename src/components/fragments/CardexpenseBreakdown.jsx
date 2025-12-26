@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "../Elements/Card";
+import Card from "../elements/Card";
 import Icon from "../elements/icon";
 function CardExpenseBreakdown(props) {
   const { data } = props;

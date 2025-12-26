@@ -1,15 +1,26 @@
-import React from "react";
-import Card from "../elements/Card";
+// src/components/fragments/CardBalance.jsx
 
-function CardBalance(){
-    return (
-        <>
-        <Card
-              title="Total Balance"
-              desc="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, autem porro asperiores numquam sed veritatis debitis beatae amet laboriosam fuga pariatur sapiente suscipit culpa facere voluptatem. Repellat asperiores doloribus earum!"
-            />
-        </>
-    );
+import React from "react";
+import Card from "../elements/Card"; // ✅ Perbaiki path: elements (huruf kecil)
+import DotsMobileStepper from "../elements/DotsMobileStepper"; // Pastikan ini benar
+
+function CardBalance(props) {
+  const { data } = props;
+
+  return (
+    <>
+      <Card
+        title="Total Balance"
+        desc={
+          <DotsMobileStepper>
+            {data.map((item) => (
+              <div key={item.id}>{item.bankName}</div>
+            ))}
+          </DotsMobileStepper>
+        }
+      />
+    </>
+  );
 }
 
 export default CardBalance;

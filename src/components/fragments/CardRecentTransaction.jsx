@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import Card from "../Elements/Card";
+import Card from "../elements/Card";
 
 function CardRecentTransaction(props) {
   const { data } = props;

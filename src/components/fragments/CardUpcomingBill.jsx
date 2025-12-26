@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "../Elements/Card";
+import Card from "../elements/Card";
 
 function CardUpcomingBill(props) {
   const { data } = props;
