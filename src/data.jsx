@@ -1,4 +1,4 @@
-import Icon from "./components/elements/icon";
+import Icon from "./components/elements/Icon";
 
 export const bills = [
   {
