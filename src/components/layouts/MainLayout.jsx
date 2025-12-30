@@ -17,7 +17,7 @@ function MainLayout(props) {
   { name: "theme-brown", bgcolor: "bg-[#8B4513]", color: "#8B4513" },
 ];
 
-const [theme, setTheme] = useContext(ThemeContext);
+const {theme, setTheme} = useContext(ThemeContext);
 
   const menu = [
     { id: 1, name: "Overview", icon: <Icon.Overview />, link: "/" },
@@ -71,10 +71,12 @@ const [theme, setTheme] = useContext(ThemeContext);
             </div>
           </div>
 		<div>
+      <NavLink to="/login">
             <div className="flex bg-special-bg3 text-white px-4 py-3 rounded-md">
                 <div className="mx-auto sm:mx-0 text-primary"><Icon.Logout /></div>
                 <div className="ms-3 hidden sm:block">Logout</div>
               </div>
+      </NavLink>
             <div className="border my-10 border-b-special-bg"></div>
 			<div className="flex justify-between items-center">
               <div>Avatar</div>

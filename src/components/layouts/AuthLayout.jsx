@@ -1,24 +1,26 @@
-// src/layouts/AuthLayout.jsx
-import React from 'react';
+import React,{ useContext } from 'react';
 import Logo from '../elements/Logo';
+import { ThemeContext } from "../../context/themeContext";
 
 function AuthLayout(props) {
   const { children } = props;
+  const { theme } = useContext(ThemeContext);
 
   return (
-    <div>
-      <main className="min-h-screen bg-gray-50 flex justify-center items-center p-4">
-        {/* container start */}
-        <div className="w-full max-w-sm">
-          {/* logo start */}
-          <Logo />
-          {children}
-          {/* logo end */}
-        </div>
-        {/* container end */}
-      </main>
-    </div>
+    <main
+  className={`min-h-screen bg-special-mainBg flex justify-center items-center ${theme.name}`}
+>
+
+      {/* container start */}
+      <div className="w-full max-w-sm">
+
+        <Logo/> 
+        {children}
+      </div>
+      {/*container end */}
+    </main>
   );
 }
+
 
 export default AuthLayout;

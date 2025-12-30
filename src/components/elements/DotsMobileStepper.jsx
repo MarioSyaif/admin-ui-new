@@ -10,7 +10,6 @@ export default function DotsMobileStepper(props) {
   const { data } = props;
   const {theme:themeMode} = React.useContext(ThemeContext);
 
-  console.log(themeMode)
 
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -38,7 +37,7 @@ export default function DotsMobileStepper(props) {
 	          backgroundColor: "darkgray"  
 	        },
           "& .MuiMobileStepper-dotActive": {
-            backgroundColor: "#299D91",
+            backgroundColor: themeMode.color,
           },
         }}
         nextButton={
