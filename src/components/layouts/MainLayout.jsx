@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react'
-import Logo from "../Elements/Logo";
-import Input from "../Elements/Input";
+import Logo from "../elements/Logo";
+import Input from "../elements/Input";
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import Icon from "../Elements/Icon";
+import Icon from "../elements/Icon";
 import { NavLink } from "react-router-dom";
 import { ThemeContext } from "../../context/themeContext";
 import { AuthContext } from "../../context/AuthContext";
