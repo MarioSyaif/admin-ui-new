@@ -1,7 +1,7 @@
 import React from 'react'
 import LabeledInput from '../Elements/LabeledInput'
-import CheckBox from '../Elements/CheckBox'
-import Button from '../Elements/Button'
+import CheckBox from '../elements/CheckBox'
+import Button from '../elements/Button'
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
