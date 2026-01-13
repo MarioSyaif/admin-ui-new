@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import Logo from '../Elements/Logo';
+import Logo from '../elements/Logo';
 import {ThemeContext } from "../../context/themeContext";
 
 function AuthLayout(props) {
