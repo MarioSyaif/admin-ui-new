@@ -1,9 +1,10 @@
 import "./App.css";
 import SignInPage from "./pages/SignIn";
-import SignUpPage from "./pages/signUp";
-import ErrorPage from "./pages/error";
-import DashboardPage from "./pages/dashboard";
-import BalancePage from "./pages/balance";
+import SignUpPage from "./pages/SignUp";
+import ErrorPage from "./pages/Error";
+import DashboardPage from "./pages/Dashboard";
+import BalancePage from "./pages/Balance";
+import ExpensesPage from "./pages/Expenses";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
@@ -50,6 +51,14 @@ function App() {
       element: (
         <RequireAuth>
           <BalancePage />
+        </RequireAuth>
+      ),
+    },
+    {
+      path: "/expense",
+      element: (
+        <RequireAuth>
+          <ExpensesPage />
         </RequireAuth>
       ),
     },

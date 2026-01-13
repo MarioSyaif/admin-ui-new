@@ -1,94 +1,204 @@
-// src/components/fragments/FormSignUp.jsx
-import React from 'react';
-import LabeledInput from '../elements/LabeledInput';
-import CheckBox from '../elements/CheckBox';
-import Button from '../elements/Button';
+import React, { useState } from "react";
+import LabeledInput from "../elements/LabeledInput";
+import Button from "../elements/Button";
+import GoogleIcon from "../elements/GoogleIcon";
+import { Link } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+/* =======================
+   VALIDATION SCHEMA
+======================= */
+const SignUpSchema = Yup.object().shape({
+  name: Yup.string().required("Nama wajib diisi"),
+  email: Yup.string()
+    .email("Email tidak valid")
+    .required("Email wajib diisi"),
+  password: Yup.string()
+    .min(6, "Password minimal 6 karakter")
+    .required("Password wajib diisi"),
+});
 
 function FormSignUp() {
+  const [apiError, setApiError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
   return (
-    <>
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-xl font-bold text-gray-02">Create an account</h1>
+    <div className="w-full max-w-md mx-auto">
+      <p className="text-center text-xl font-semibold mb-8">
+        Create an account
+      </p>
+
+      <Formik
+        initialValues={{
+          name: "",
+          email: "",
+          password: "",
+        }}
+        validationSchema={SignUpSchema}
+        onSubmit={async (values, { setSubmitting }) => {
+          setApiError("");
+
+          try {
+            const response = await fetch(
+              "https://jwt-auth-eight-neon.vercel.app/register",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  name: values.name,
+                  email: values.email,
+                  password: values.password,
+                }),
+              }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+              // contoh error: email sudah digunakan
+              setApiError(data.message || "Email Sudah Pernah Digunakan Sebelumnya");
+              return;
+            }
+
+            // kalau sukses (opsional)
+            setSuccessMessage("Register Berhasil");
+          } catch (error) {
+            setApiError("Terjadi kesalahan pada server");
+          } finally {
+            setSubmitting(false);
+          }
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Form className="space-y-4">
+            {/* NAME */}
+            <div>
+              <Field name="name">
+                {({ field }) => (
+                  <LabeledInput
+                    {...field}
+                    label="Name"
+                    placeholder="John Doe"
+                    type="text"
+                  />
+                )}
+              </Field>
+              <ErrorMessage
+                name="name"
+                component="p"
+                className="text-red-500 text-xs mt-1"
+              />
+            </div>
+
+            {/* EMAIL */}
+            <div>
+              <Field name="email">
+                {({ field }) => (
+                  <LabeledInput
+                    {...field}
+                    label="Email Address"
+                    placeholder="hello@example.com"
+                    type="email"
+                  />
+                )}
+              </Field>
+              <ErrorMessage
+                name="email"
+                component="p"
+                className="text-red-500 text-xs mt-1"
+              />
+            </div>
+
+            {/* PASSWORD */}
+            <div>
+              <Field name="password">
+                {({ field }) => (
+                  <LabeledInput
+                    {...field}
+                    label="Password"
+                    placeholder="••••••••"
+                    type="password"
+                    passwordEye
+                  />
+                )}
+              </Field>
+              <ErrorMessage
+                name="password"
+                component="p"
+                className="text-red-500 text-xs mt-1"
+              />
+            </div>
+
+            {/* BUTTON */}
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? "Loading..." : "Register"}
+            </Button>
+          </Form>
+        )}
+      </Formik>
+
+      {/* Divider */}
+      <div className="flex items-center my-6">
+        <div className="grow h-px bg-gray-300"></div>
+        <span className="px-3 text-gray-500 text-sm">
+          or sign up with
+        </span>
+        <div className="grow h-px bg-gray-300"></div>
       </div>
 
-      {/* form start */}
-      <div className="mt-4">
-        <form>
-          <div className="mb-6">
-            <LabeledInput
-              label="Name"
-              id="name"
-              type="text"
-              placeholder="Tanzir Rahman"
-              name="name"
-            />
-          </div>
-
-          <div className="mb-6">
-            <LabeledInput
-              label="Email Address"
-              id="email"
-              type="email"
-              placeholder="hello@example.com"
-              name="email"
-            />
-          </div>
-
-          <div className="mb-6">
-            <LabeledInput
-              label="Password"
-              id="password"
-              type="password"
-              placeholder="●●●●●●●●●●"
-              name="password"
-              showEyeIcon={true} // ⚠️ Pastikan komponen LabeledInput mendukung ini
-            />
-          </div>
-
-          {/* Terms agreement */}
-          <div className="mb-6 text-xs text-gray-03">
-            By continuing, you agree to our{" "}
-            <a href="#" className="text-primary hover:underline">
-              terms of service.
-            </a>
-          </div>
-
-          <Button variant="primary">Sign up</Button>
-        </form>
-      </div>
-      {/* form end */}
-
-      {/* teks pemisah */}
-      <div className="my-9 px-7 flex justify-center items-center text-xs text-gray-03 relative">
-        <div className="border border-gray-05 w-full"></div>
-        <div className="px-2 bg-special-mainBg absolute"> or sign up with</div>
-      </div>
-
-      {/* sign in with google */}
-      <div className="mb-8">
-        <button
-          type="button"
-          className="w-full h-12 rounded-md text-sm font-medium bg-gray-100 text-gray-800 flex items-center justify-center hover:bg-gray-200 transition-colors"
-        >
-          <svg className="h-5 w-5 mr-2" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-            <path fill="#EB4335" d="M23.7136364,10.1333333 C27.025,10.1333333 30.0159091,11.3066667 32.3659091,13.2266667 L39.2022727,6.4 C35.0363636,2.77333333 29.6954545,0.533333333 23.7136364,0.533333333 C14.4268636,0.533333333 6.44540909,5.84426667 2.62345455,13.6042667 L10.5322727,19.6437333 C12.3545909,14.112 17.5491591,10.1333333 23.7136364,10.1333333"/>
-            <path fill="#34A853" d="M23.7136364,37.8666667 C17.5491591,37.8666667 12.3545909,33.888 10.5322727,28.3562667 L2.62345455,34.3946667 C6.44540909,42.1557333 14.4268636,47.4666667 23.7136364,47.4666667 C29.4455,47.4666667 34.9177955,45.4314667 39.0249545,41.6181333 L31.5177727,35.8144 C29.3995682,37.1488 26.7323182,37.8666667 23.7136364,37.8666667"/>
-            <path fill="#FBBC05" d="M9.82727273,24 C9.82727273,22.4757333 10.0804318,21.0144 10.5322727,19.6437333 L2.62345455,13.6042667 C1.08206818,16.7338667 0.213636364,20.2602667 0.213636364,24 C0.213636364,27.7365333 1.081,31.2608 2.62025,34.3882667 L10.5247955,28.3370667 C10.0772273,26.9728 9.82727273,25.5168 9.82727273,24"/>
-            <path fill="#4285F4" d="M46.1454545,24 C46.1454545,22.6133333 45.9318182,21.12 45.6113636,19.7333333 L23.7136364,19.7333333 L23.7136364,28.8 L36.3181818,28.8 C35.6879545,31.8912 33.9724545,34.2677333 31.5177727,35.8144 L39.0249545,41.6181333 C43.3393409,37.6138667 46.1454545,31.6490667 46.1454545,24"/>
-          </svg>
+      {/* Google */}
+      <button
+        type="button"
+        className="w-full flex items-center justify-center gap-3 py-3 border border-gray-300 rounded-xl hover:bg-gray-100 transition"
+      >
+        <GoogleIcon />
+        <span className="text-gray-700 font-medium">
           Continue with Google
-        </button>
-      </div>
+        </span>
+      </button>
 
-      {/* link to sign in */}
-      <div className="flex justify-center text-sm text-gray-03">
+      {/* Link */}
+      <p className="text-center text-sm text-gray-600 mt-6">
         Already have an account?{" "}
-        <Link to="/login" className="text-primary text-sm font-bold">
-          Sign In Here
+        <Link to="/login" className="text-teal-600 font-semibold">
+          Sign in here
         </Link>
-      </div>
-    </>
+      </p>
+
+      {/* ERROR TOAST */}
+      {apiError && (
+        <div className="fixed bottom-6 left-6 bg-red-600 text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-3">
+          <span className="font-semibold">!</span>
+          <span>{apiError}</span>
+          <button
+            className="ml-2 font-bold"
+            onClick={() => setApiError("")}
+          >
+            ×
+          </button>
+        </div>
+
+        
+      )}
+
+      {/* SUCCESS TOAST */}
+        {successMessage && (
+        <div className="fixed bottom-6 left-6 bg-green-600 text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-3">
+            <span className="font-semibold">✓</span>
+            <span>{successMessage}</span>
+            <button
+            className="ml-2 font-bold"
+            onClick={() => setSuccessMessage("")}
+            >
+            ×
+            </button>
+        </div>
+        )}
+
+    </div>
   );
 }
 

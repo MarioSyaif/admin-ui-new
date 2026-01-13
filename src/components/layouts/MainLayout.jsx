@@ -8,9 +8,15 @@ import { ThemeContext } from "../../context/themeContext";
 import { AuthContext } from "../../context/AuthContext";
 import { logoutService } from "../../services/AuthServices";
 
+// 👉 TAMBAHAN MUI
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function MainLayout(props) {
     const { children } = props;
+
+    // 👉 STATE UNTUK LOADER LOGOUT
+    const [loggingOut, setLoggingOut] = useState(false);
 
     const themes = [
         { name: "theme-green", bgcolor: "bg-[#299D91]", color: "#299D91" },
@@ -25,7 +31,7 @@ function MainLayout(props) {
     const menu = [
         { id: 1, name: "Overview", icon: <Icon.Overview />, link: "/" },
         { id: 2, name: "Balances", icon: <Icon.Balance />, link: "/balance" },
-        { id: 3, name: "Transaction", icon: <Icon.Transaction />, link: "/transaction", },
+        { id: 3, name: "Transaction", icon: <Icon.Transaction />, link: "/transaction" },
         { id: 4, name: "Bills", icon: <Icon.Bill />, link: "/bill" },
         { id: 5, name: "Expenses", icon: <Icon.Expense />, link: "/expense" },
         { id: 6, name: "Goals", icon: <Icon.Goal />, link: "/goal" },
@@ -36,18 +42,30 @@ function MainLayout(props) {
 
     const handleLogout = async () => {
         try {
+            setLoggingOut(true); // 👉 TAMPILKAN BACKDROP
             await logoutService();
             logout();
         } catch (err) {
             console.error(err);
-            if (err.status === 401) {
-                logout();
-            }
+            logout();
+        } finally {
+            setLoggingOut(false); // 👉 TUTUP BACKDROP
         }
     };
 
     return (
         <>
+            {/* 👉 BACKDROP LOGOUT */}
+            <Backdrop
+                sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 999 }}
+                open={loggingOut}
+            >
+                <div className="flex flex-col items-center gap-3">
+                    <CircularProgress color="inherit" />
+                    <p className="text-sm">Logging Out</p>
+                </div>
+            </Backdrop>
+
             <div className={`flex min-h-screen ${theme.name}`}>
                 <aside className="bg-defaultBlack w-70 text-special-bg2 flex flex-col justify-between px-7 py-12">
                     <div>
@@ -57,11 +75,13 @@ function MainLayout(props) {
                         <nav>
                             {menu.map((item) => (
                                 <NavLink
-                                    key={item.id} to={item.link}
+                                    key={item.id}
+                                    to={item.link}
                                     className={({ isActive }) =>
-                                        `flex px-4 py-3 rounded-md hover:text-white hover:font-bold hover:scale-105 ${isActive
-                                            ? "bg-primary text-white font-bold"
-                                            : "hover:bg-special-bg3"
+                                        `flex px-4 py-3 rounded-md hover:text-white hover:font-bold hover:scale-105 ${
+                                            isActive
+                                                ? "bg-primary text-white font-bold"
+                                                : "hover:bg-special-bg3"
                                         }`
                                     }
                                 >
@@ -71,6 +91,7 @@ function MainLayout(props) {
                             ))}
                         </nav>
                     </div>
+
                     <div>
                         Themes
                         <div className="flex flex-col sm:flex-row gap-2 items-center">
@@ -83,41 +104,54 @@ function MainLayout(props) {
                             ))}
                         </div>
                     </div>
+
                     <div>
                         <div onClick={handleLogout} className="cursor-pointer">
                             <div className="flex bg-special-bg3 text-white px-4 py-3 rounded-md">
-                                <div className="mx-auto sm:mx-0 text-primary"><Icon.Logout /></div>
+                                <div className="mx-auto sm:mx-0 text-primary">
+                                    <Icon.Logout />
+                                </div>
                                 <div className="ms-3 hidden sm:block">Logout</div>
                             </div>
                         </div>
+
                         <div className="border my-10 border-b-special-bg"></div>
+
                         <div className="flex justify-between items-center">
                             <div>Avatar</div>
                             <div className="hidden sm:block">
                                 <div>{user.name}</div>
                                 <div>View Profile</div>
                             </div>
-                            <div className="hidden sm:block"><Icon.Detail size={15} /></div>
+                            <div className="hidden sm:block">
+                                <Icon.Detail size={15} />
+                            </div>
                         </div>
                     </div>
                 </aside>
+
                 <div className="bg-special-mainBg flex-1 flex flex-col">
                     <header className="border-b border-gray-05 px-6 py-7 flex justify-between items-center">
                         <div className="flex items-center">
                             <div className="font-bold text-2xl me-6">{user.name}</div>
-                            <div className="text-gray-03 flex"><Icon.ChevronRight size={20} /><span>May 19, 2023</span>
+                            <div className="text-gray-03 flex">
+                                <Icon.ChevronRight size={20} />
+                                <span>May 19, 2023</span>
                             </div>
                         </div>
                         <div className="flex items-center">
-                            <div className="me-10"><NotificationsIcon className="text-primary scale-110" /></div>
+                            <div className="me-10">
+                                <NotificationsIcon className="text-primary scale-110" />
+                            </div>
                             <Input backgroundColor="bg-white" border="border-white" />
                         </div>
                     </header>
+
                     <main className="flex-1 px-6 py-4">{children}</main>
                 </div>
             </div>
         </>
-    )
+    );
 }
 
-export default MainLayout
+export default MainLayout;

@@ -4,6 +4,7 @@ import SignInPage from "./pages/SignIn";
 import SignUpPage from "./pages/SignUp";
 import BalancePage from "./pages/Balance";
 import ErrorPage from "./pages/Error";
+import Expenses from "./pages/Expenses";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,11 @@ const router = createBrowserRouter([
     path: "/balance",
     element: <BalancePage />,
   },
+  {
+    path: "/expense",
+    element: <Expenses />,
+  }
+
 ]);
 
 export default router;
